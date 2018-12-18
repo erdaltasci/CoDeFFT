@@ -9,12 +9,12 @@ function  ClassifyKNNCifar100
     load cifar100DLtrainresnet101pool5.mat
     load cifar100DLtestresnet101pool5.mat
     
-    n=3; % k value of k-nn
+    k=1; % k value of k-nn
     
     %combine training features
     P1 = [double(features); double(P1);double(P64)];
     T = trainingSet.Labels;
-    classifier  = fitcknn(P1', T, 'NumNeighbors', n);
+    classifier  = fitcknn(P1', T, 'NumNeighbors', k);
     %combine test features
     Ptest = [double(testFeatures)' double(P)' double(Ptest64)'];
 
@@ -22,9 +22,8 @@ function  ClassifyKNNCifar100
     predictedLabels = predict(classifier, Ptest);
     testLabels = testSet.Labels;
     predictedLabels = categorical(predictedLabels);
-    % Tabulate the results using a confusion matrix.
-%     confMat = confusionmat(testLabels, predictedLabels);
-    disp(strcat('K-NN:',num2str(n),','));
+
+    disp(strcat('K-NN:',num2str(k),','));
     acc = sum(testLabels== predictedLabels)/length(testLabels)*100;
     disp(strcat('Acc: %',num2str(acc)));
 
